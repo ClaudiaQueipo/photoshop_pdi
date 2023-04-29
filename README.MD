@@ -38,6 +38,11 @@ cd src
 ````bash
 python main.py
 ````
+## SOLID PRINCIPLES
 
+The SOLID principle that was applied in this code is the Single Responsibility Principle (SRP) in Photoshop class. Each method has a single responsibility and is responsible for performing a specific task, which makes the code more maintainable and scalable.
 
+## Design Patterns
+
+The Singleton design pattern was applied. This is indicated by the use of the metaclass=SingletonMeta argument in the Photoshop class definition. The Singleton pattern ensures that only one instance of the Photoshop class can exist at any given time, providing global access to this instance throughout the codebase.
 

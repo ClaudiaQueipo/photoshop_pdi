@@ -28,6 +28,14 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         
 
     def build_ui(self):
+        """Builds the user interface for the image processing application.
+        Args:
+            self: The instance of the ImageProcessingApp class to which this function belongs.
+
+        Returns:
+            None.
+        """
+        
         self.top_menu = ctk.CTkFrame(self, height=40)
         self.bottom_menu = ctk.CTkFrame(self, height=40)
 
@@ -76,6 +84,8 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         ]
 
         def popup_callback_wrapper(option):
+            """Esta función se encarga de llamar a la función de llamada 
+            de retorno correspondiente para una opción de menú emergente seleccionada."""
             if option in callback_map:
                 callback_map[option]()
 
@@ -114,6 +124,12 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         )
     
     def open_image(self):
+        """Opens a dialog window to select an image and displays it in the
+            graphical user interface.
+           The selected image is resized to fit the size of the image panel
+            and stored as a copy in the image_modified variable.
+        """
+        
         file_types = (("Imágenes", "*.png *.jpg *.jpeg *.gif *.bmp"),)
 
         image_path = filedialog.askopenfilename(
@@ -136,20 +152,24 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         self.image.pack(padx=8, pady=8, side=tk.TOP, expand=True)
     
     def save_image(self):
-        # Obtén las dimensiones de la imagen de referencia
+        """Resizes the modified image to the dimensions of the original 
+            image and saves the modified image to a file.
+           Opens a dialog window to select the output file path and name.
+        """
         reference_image = Image.open(self.image_path)
         ref_width, ref_height = reference_image.size
 
-        # Redimensiona la imagen modificada a las dimensiones de la imagen de referencia
         self.image_modified = self.image_modified.resize((ref_width, ref_height), Image.LANCZOS)
 
-        # Guarda la imagen modificada
         savefile = filedialog.asksaveasfile(defaultextension=".jpg")
         self.image_modified.save(savefile)
     
     def put_image(self, image):
+        """
+         Updates the image displayed in the GUI with the given image. Resizes the image to fit the dimensions of the image panel. 
+        """
         
-        # Actualizar la imagen en la interfaz gráfica
+        
         w, h = self.image_panel.winfo_width(), self.image_panel.winfo_height()
         image.thumbnail((w, h), Image.LANCZOS)
         
@@ -160,6 +180,9 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         self.image.configure(image=image_tk)
 
     def close_image(self):
+        """
+            Removes the currently displayed image from the GUI. 
+        """
         if self.image:
             self.image.pack_forget()
             self.image = None
@@ -190,6 +213,7 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         
         self.image_modified = image.copy()
 
+        self.reset_slider()
         self.put_image(self.image_modified)
 
     def contrast_callback(self):
@@ -234,10 +258,8 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         ('Archivos de imagen', '*.png *.jpg *.jpeg *.gif *.bmp'), ('Todos los archivos', '*.*')))
 
         image = Image.open(filename)
-        # Obtener las dimensiones de self.image_modified
         w_modified, h_modified = self.image_modified.size
 
-        # Redimensionar la imagen cargada para que tenga las mismas dimensiones que self.image_modified
         image = image.resize((w_modified, h_modified), Image.LANCZOS)
         
         image = self.photoshop.sum(self.image_modified, image)
@@ -250,10 +272,8 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         ('Archivos de imagen', '*.png *.jpg *.jpeg *.gif *.bmp'), ('Todos los archivos', '*.*')))
 
         image = Image.open(filename)
-        # Obtener las dimensiones de self.image_modified
         w_modified, h_modified = self.image_modified.size
 
-        # Redimensionar la imagen cargada para que tenga las mismas dimensiones que self.image_modified
         image = image.resize((w_modified, h_modified), Image.LANCZOS)
         
         image = self.photoshop.subtract(self.image_modified, image)
@@ -275,10 +295,8 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
 
         image = Image.open(filename)
 
-        # Obtener las dimensiones de self.image_modified
         w_modified, h_modified = self.image_modified.size
 
-        # Redimensionar la imagen cargada para que tenga las mismas dimensiones que self.image_modified
         image = image.resize((w_modified, h_modified), Image.LANCZOS)
 
         image = self.photoshop.lo_and(self.image_modified, image)
@@ -293,10 +311,8 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         ('Archivos de imagen', '*.png *.jpg *.jpeg *.gif *.bmp'), ('Todos los archivos', '*.*')))
 
         image = Image.open(filename)
-        # Obtener las dimensiones de self.image_modified
         w_modified, h_modified = self.image_modified.size
 
-        # Redimensionar la imagen cargada para que tenga las mismas dimensiones que self.image_modified
         image = image.resize((w_modified, h_modified), Image.LANCZOS)
         image = self.photoshop.lo_or(self.image_modified,image)
         
@@ -310,10 +326,8 @@ class MainApp(ctk.CTk, metaclass=SingletonMeta):
         ('Archivos de imagen', '*.png *.jpg *.jpeg *.gif *.bmp'), ('Todos los archivos', '*.*')))
 
         image = Image.open(filename)
-        # Obtener las dimensiones de self.image_modified
         w_modified, h_modified = self.image_modified.size
 
-        # Redimensionar la imagen cargada para que tenga las mismas dimensiones que self.image_modified
         image = image.resize((w_modified, h_modified), Image.LANCZOS)
 
         image = self.photoshop.lo_xor(self.image_modified,image)

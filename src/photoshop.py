@@ -27,8 +27,6 @@ class Photoshop(metaclass=SingletonMeta):
     @pil_to_np_to_pil
     def adjust_brightness(self, image: np.ndarray, value: int) -> np.ndarray:
         """Adjusts the brightness of an input image by a given value."""
-        value = value
-        print(value)
         final_output = cv2.convertScaleAbs(image, alpha=1, beta=value)
         return final_output
     
@@ -37,7 +35,6 @@ class Photoshop(metaclass=SingletonMeta):
     def adjust_contrast(self, image: np.ndarray, value: int) -> np.ndarray:
         """ Adjusts the contrast of an input image by a given value  """  
             
-        value = value
         alpha = (value + 100) / 100
         final_output = cv2.convertScaleAbs(image, alpha=alpha, beta=0)
         
